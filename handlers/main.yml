@@ -1,2 +1,8 @@
 ---
-# handlers file for postfix
+# Reload postfix service
+- name: Restart postfix service
+  ansible.builtin.service:
+    name: "{{ postfix_service }}"
+    state: "{{ postfix_restart_state }}"
+  listen: "restart-postifx"
+  when: postfix_state | default('started') == 'started'

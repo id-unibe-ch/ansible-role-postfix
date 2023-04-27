@@ -1,2 +1,14 @@
 ---
-# defaults file for postfix
+# Set initial postfix state. Recommended values: `started` or `stopped`
+postfix_state: started
+
+# Set initial postfix service status. Recommended values: `yes` or `no`
+postfix_enabled: true
+
+# Set postfix state when configuration changes are made. Recommended values:
+# `restarted` or `reloaded`
+postfix_restart_state: restarted
+
+# postfix package state; use `present` to make sure it's installed, or `latest`
+# if you want to upgrade or switch versions using a new repo.
+postfix_packages_state: present

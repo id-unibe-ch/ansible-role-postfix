@@ -1,38 +1,65 @@
-Role Name
+Ansible Role: Postfix
 =========
 
-A brief description of the role goes here.
+An Ansible role that manages Postfix. Currently the role only installs the
+postfix package and manages the service. No other functionality so far.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+No pre-requisites necessary at the moment.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Available variables are listed below, along with default values (see `defaults/main.yml`):
+
+    postfix_state: started
+
+Set the initial state of the postfix daemon when this role is run. This should
+generally remain `started`. There occasions where setting this to `stopped`
+might come in handy, i.e. during a maintenance down. In combination with the
+`postfix_`
+
+    postfix_enabled: true
+
+This sets the boot time status of the Postfix daemon. Should remain to `true`
+unless the daemon shouldn't be automatically started at boot time.
+
+    postfix_restart_state: restarted
+
+This determines the measure that is taken when the `postfix` handlers
+called. The default is to restart the Postfix process, when the handlers kicks
+in. Can be set to `reloaded` to only reload the Postfix process.
+
+    postfix_packages_state: present
+
+The initial packages state is `present`, which means the default packages are
+getting installed if not yet present. If you want to automatically update the
+package if newer versions are available, set this to `latest`. In case you want
+to disable and remove the service, set this to `absent`.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+This role has no dependencies to other roles.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Including an example of how to use your role (for instance, with variables passed
+in as parameters) is always nice for users too:
 
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: unibe_idsys.postifx }
 
 License
 -------
 
-BSD
+MIT
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+The role was created in 2023 by the IT-Services Office of the University of Bern

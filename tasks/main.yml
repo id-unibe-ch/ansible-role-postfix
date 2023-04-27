@@ -1,3 +1,9 @@
 ---
-- name: Load platform-specific tasks
-  ansible.builtin.include_tasks: "{{ ansible_distribution | lower }}.yml"
+- name: Include OS-specific setup tasks
+  ansible.builtin.include_tasks: "setup-{{ ansible_os_family }}.yml"
+
+- name: Start and enable postfix service
+  ansible.builtin.service:
+    name: "{{ postfix_service }}"
+    state: "{{ postfix_state }}"
+    enabled: "{{ postfix_enabled }}"

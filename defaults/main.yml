@@ -1,4 +1,7 @@
 ---
+# Dictionary with mail aliases that are managed in /etc/aliases
+postfix_alias_map: []
+
 # Set initial postfix state. Recommended values: `started` or `stopped`
 postfix_state: started
 

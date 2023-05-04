@@ -2,7 +2,14 @@
 - name: Include OS-specific setup tasks
   ansible.builtin.include_tasks: "setup-{{ ansible_os_family }}.yml"
 
-- name: Start and enable postfix service
+- name: Manage entries in /etc/aliases
+  ansible.builtin.lineinfile:
+    path: /etc/aliases
+    regexp: "{{ item.key }}:"
+    line: "{{ item.key }}:    {{ item.value if (item.value is string) else item.value | join(', ') }}"
+  loop: "{{ postfix_alias_map | dict2items }}"
+
+- name: Ensure Postfix is started and enabled at boot.
   ansible.builtin.service:
     name: "{{ postfix_service }}"
     state: "{{ postfix_state }}"

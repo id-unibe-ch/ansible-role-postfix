@@ -5,3 +5,6 @@ postfix_packages:
 
 # Name of the postfix systemd service
 postfix_service: postfix
+
+# Default alias file
+postfix_alias_path: /etc/aliases

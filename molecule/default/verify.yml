@@ -5,10 +5,6 @@
   hosts: all
   gather_facts: false
   tasks:
-    - name: Example assertion
-      ansible.builtin.assert:
-        that: true
-
     - name: Postfix service is running
       ansible.builtin.wait_for:
         port: 25
@@ -16,11 +12,29 @@
       register: port_check
       failed_when: port_check.failed
 
-    - name: No mail alias for user root
+    # - name: No mail alias for user root
+    #   ansible.builtin.lineinfile:
+    #     path: /etc/aliases
+    #     regexp: "^root:"
+    #     state: absent
+    #   check_mode: true
+    #   register: aliases
+    #   failed_when: aliases is changed
+
+    - name: Alias set for local user www
       ansible.builtin.lineinfile:
         path: /etc/aliases
-        regexp: "^root:"
-        state: absent
-      check_mode: true
-      register: aliases
-      failed_when: aliases is changed
+        regexp: "^www:    user1@test.com"
+        state: present
+        check_mode: true
+      register: alias_state
+      failed_when: alias_state is changed
+
+    - name: Alias set for local user root
+      ansible.builtin.lineinfile:
+        path: /etc/aliases
+        regexp: "^root:    user2@test.com, user3@example.com"
+        state: present
+        check_mode: true
+      register: alias_state
+      failed_when: alias_state is changed

@@ -1,7 +1,9 @@
 ---
-- name: Initialize alias database
-  ansible.builtin.command: newaliases
-  listen: "init-aliases"
+- name: Rebuild alias database
+  ansible.builtin.command:
+    cmd: postalias "{{ postfix_alias_path }}"
+  changed_when: false
+  listen: rebuild_aliases_db
 
 # Reload postfix service
 - name: Restart postfix service

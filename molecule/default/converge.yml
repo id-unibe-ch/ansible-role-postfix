@@ -2,18 +2,7 @@
 - name: Converge
   hosts: all
 
-  vars:
-    postfix_alias_map:
-      www: "user1@test.com"
-      root: [ "user2@test.com", "user3@example.com" ]
-
   tasks:
-    # replace these tasks with whatever you find suitable to test
-    # - name: Copy something to test use of synchronize module
-    #   ansible.builtin.copy:
-    #     src: /etc/hosts
-    #     dest: /tmp/hosts-from-controller
-    #     mode: "0644"
     - name: "Include unibe_idsys.postfix"
       ansible.builtin.include_role:
         name: "postfix"

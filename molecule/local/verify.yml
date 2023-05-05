@@ -1,1 +1,31 @@
-../default/verify.yml
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Postfix service is running
+      ansible.builtin.wait_for:
+        port: 25
+        timeout: 30
+      register: port_check
+      failed_when: port_check.failed
+
+    - name: Alias set for local user www
+      ansible.builtin.lineinfile:
+        path: /etc/aliases
+        regexp: "^www:    user1@test.com"
+        state: present
+      check_mode: true
+      register: alias_state
+      failed_when: alias_state is changed
+
+    - name: Alias set for local user root
+      ansible.builtin.lineinfile:
+        path: /etc/aliases
+        regexp: "^root:    user2@test.com, user3@example.com"
+        state: present
+      check_mode: true
+      register: alias_state
+      failed_when: alias_state is changed

@@ -12,29 +12,11 @@
       register: port_check
       failed_when: port_check.failed
 
-    # - name: No mail alias for user root
-    #   ansible.builtin.lineinfile:
-    #     path: /etc/aliases
-    #     regexp: "^root:"
-    #     state: absent
-    #   check_mode: true
-    #   register: aliases
-    #   failed_when: aliases is changed
-
-    - name: Alias set for local user www
+    - name: No mail alias for user root
       ansible.builtin.lineinfile:
         path: /etc/aliases
-        regexp: "^www:    user1@test.com"
-        state: present
-        check_mode: true
-      register: alias_state
-      failed_when: alias_state is changed
-
-    - name: Alias set for local user root
-      ansible.builtin.lineinfile:
-        path: /etc/aliases
-        regexp: "^root:    user2@test.com, user3@example.com"
-        state: present
-        check_mode: true
-      register: alias_state
-      failed_when: alias_state is changed
+        regexp: "^root:"
+        state: absent
+      check_mode: true
+      register: aliases
+      failed_when: aliases is changed

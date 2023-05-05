@@ -1,1 +1,13 @@
-../default/converge.yml
+---
+- name: Converge
+  hosts: all
+
+  vars:
+    postfix_alias_map:
+      www: "user1@test.com"
+      root: [ "user2@test.com", "user3@example.com" ]
+
+  tasks:
+    - name: "Include unibe_idsys.postfix"
+      ansible.builtin.include_role:
+        name: "postfix"

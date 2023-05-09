@@ -1,16 +1,35 @@
 ---
-# This is an example playbook to execute Ansible tests.
-
-- name: Verify
+- name: Verify the server converged to send-only MTA using a relay host.
   hosts: all
   gather_facts: false
+
   tasks:
-    - name: Postfix service is running
-      ansible.builtin.wait_for:
-        port: 25
-        timeout: 30
-      register: port_check
-      failed_when: port_check.failed
+    - name: Option inet_interfaces defaults to localhost
+      ansible.builtin.lineinfile:
+        path: /etc/postfix/main.cf
+        regexp: "^inet_interfaces = 127.0.0.1"
+        state: present
+      check_mode: true
+      register: inet_interfaces
+      failed_when: inet_interfaces is changed
+
+    - name: Option inet_protocols defaults to all
+      ansible.builtin.lineinfile:
+        path: /etc/postfix/main.cf
+        regexp: "^inet_protocols = ipv4"
+        state: present
+      check_mode: true
+      register: inet_protocols
+      failed_when: inet_protocols is changed
+
+    - name: Relay host is correctly set
+      ansible.builtin.lineinfile:
+        path: /etc/aliases
+        regexp: "^relayhost = [smtp.example.com]"
+        state: present
+      check_mode: true
+      register: relayhost
+      failed_when: relayhost is changed
 
     - name: Alias set for local user www
       ansible.builtin.lineinfile:
@@ -30,3 +49,9 @@
       register: alias
       failed_when: alias is changed
 
+    - name: Postfix service is running
+      ansible.builtin.wait_for:
+        port: 25
+        timeout: 30
+      register: port_check
+      failed_when: port_check.failed

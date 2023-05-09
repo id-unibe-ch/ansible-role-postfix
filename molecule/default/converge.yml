@@ -1,5 +1,5 @@
 ---
-- name: Converge
+- name: Converge to a Postfix server that has the role defaults set.
   hosts: all
 
   tasks:

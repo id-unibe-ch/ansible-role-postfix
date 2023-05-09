@@ -1,6 +1,21 @@
 ---
+# The inet_interfaces parameter specifies the network interface
+# addresses that this mail system receives mail on.
+postfix_inet_interfaces: localhost
+
+# Enable IPv4, and IPv6 if supported; valid value include `all`, `ipv4`,
+postfix_inet_protocols: all
+
 # Dictionary with mail aliases that are managed in /etc/aliases
 postfix_alias_map: {}
+
+# The relayhost parameter specifies the default host to send mail to.
+# Specify a domain, host, host:port, [host]:port, [address] or [address]:port;
+# the form [host] turns off MX lookups.
+#postfix_relayhost = $mydomain
+#postfix_relayhost = [gateway.my.domain]
+#postfix_relayhost = [an.ip.add.ress]
+postfix_relayhost: undef
 
 # Set initial postfix state. Recommended values: `started` or `stopped`
 postfix_state: started

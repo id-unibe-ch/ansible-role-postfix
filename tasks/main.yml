@@ -7,6 +7,7 @@
     path: /etc/aliases
     regexp: "{{ item.key }}:"
     line: "{{ item.key }}:    {{ item.value if (item.value is string) else item.value | join(', ') }}"
+    state: "{{ 'absent' if (item.value == 'undef') else 'present' }}"
   loop: "{{ postfix_alias_map | dict2items }}"
   notify: rebuild_aliases_db
 

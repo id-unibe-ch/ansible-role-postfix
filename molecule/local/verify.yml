@@ -18,8 +18,8 @@
         regexp: "^www:    user1@test.com"
         state: present
       check_mode: true
-      register: alias_state
-      failed_when: alias_state is changed
+      register: alias
+      failed_when: alias is changed
 
     - name: Alias set for local user root
       ansible.builtin.lineinfile:
@@ -27,5 +27,6 @@
         regexp: "^root:    user2@test.com, user3@example.com"
         state: present
       check_mode: true
-      register: alias_state
-      failed_when: alias_state is changed
+      register: alias
+      failed_when: alias is changed
+

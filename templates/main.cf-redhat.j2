@@ -696,11 +696,11 @@ manpage_directory = /usr/share/man
 # sample_directory: The location of the Postfix sample configuration files.
 # This parameter is obsolete as of Postfix 2.1.
 #
-sample_directory = /usr/share/doc/postfix/samples
+sample_directory = {{ postfix_sample_directory }}
 
 # readme_directory: The location of the Postfix README files.
 #
-readme_directory = /usr/share/doc/postfix/README_FILES
+readme_directory = {{ postfix_readme_directory }}
 
 # TLS CONFIGURATION
 #

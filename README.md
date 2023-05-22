@@ -107,11 +107,22 @@ Including an example of how to use your role (for instance, with variables
 passed in as parameters) is always nice for users too:
 
     - hosts: servers
+
       roles:
          - { role: unibe_idsys.postifx }
 
-<!-- add an example which illustrate a standard usage internally -->
-<!-- add another example for purging postfix from the system -->
+<!-- add an example which illustrate a standard usage internally? -->
+
+The following example shows how to remove Postfix from the systems again:
+
+    - hosts: servers
+
+      vars:
+        postfix_service_state: stopped
+        postfix_packages_state: absent
+
+      roles:
+         - { role: unibe_idsys.postifx }
 
 ## License
 

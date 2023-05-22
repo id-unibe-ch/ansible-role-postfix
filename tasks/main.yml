@@ -11,12 +11,14 @@
     setype: postfix_etc_t
     mode: 0644
   notify: restart-postifx
+  when: postfix_packages_state != 'absent'
 
 - name: Ensure Postfix is started and enabled at boot.
   ansible.builtin.service:
     name: "{{ postfix_service }}"
     state: "{{ postfix_state }}"
     enabled: "{{ postfix_enabled }}"
+  when: postfix_packages_state != 'absent'
 
 - name: Manage entries in /etc/aliases
   ansible.builtin.lineinfile:
@@ -25,4 +27,5 @@
     line: "{{ item.key }}:    {{ item.value if (item.value is string) else item.value | join(', ') }}"
     state: "{{ 'absent' if (item.value == 'undef') else 'present' }}"
   loop: "{{ postfix_alias_map | dict2items }}"
+  when: postfix_packages_state != 'absent'
   notify: rebuild_aliases_db

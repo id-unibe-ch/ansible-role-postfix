@@ -38,7 +38,7 @@ jobs:
     strategy:
       matrix:
         distro: [rockylinux8, rockylinux9, ubuntu2004, ubuntu2204]
-        scenario: [default, local]
+        scenario: [default, local, remove-alias, uninstall]
         include:
           - playbook: converge.yml
 

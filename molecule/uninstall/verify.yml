@@ -1,0 +1,13 @@
+---
+- name: Verify that postfix is removed
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    # Do not check for stopped service does not work after removing the package
+    # except on Ubuntu as the sercie is actually only masked but still there.
+    - name: Check that package postfix is absent
+      ansible.builtin.package:
+        name: postfix
+        state: absent
+      check_mode: true

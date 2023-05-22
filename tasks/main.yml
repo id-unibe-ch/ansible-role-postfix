@@ -31,5 +31,5 @@
       notify: rebuild_aliases_db
 
 - name: Postfix is going to be removed from the system
-  ansible.builtin.include_tasks: "uninstall.yml"
+  ansible.builtin.include_tasks: "uninstall_{{ ansible_os_family | lower }}.yml"
   when: postfix_packages_state == "absent"

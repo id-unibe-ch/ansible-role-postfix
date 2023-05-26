@@ -1,24 +1,68 @@
 # Ansible Role: Postfix
 
-An Ansible role that manages Postfix. Currently the role only installs the
-postfix package and manages the service. No other functionality so far.
+An Ansible role that manages Postfix. Currently the role has the following
+features:
+
+* Install Postfix
+* Manage config settings in `/etc/postfix/main.cf`, see
+  [role variables](#role-variables)
+* Manage the file-base alias db `/etc/alias`.
+* Completely uninstall Postfix
 
 ## Requirements
 
-No pre-requisites necessary at the moment.
+No prerequisites necessary at the moment.
 
 ## Role Variables
 
-Available variables are listed below, along with default values (see `defaults/main.yml`):
+Available variables are listed below, along with default values (see also `defaults/main.yml`):
+
+Variables of the form `$varname` are literally transported to the config file as
+Postfix is internally interpolating these on service startup. In other words,
+technically, setting an `postfix_myorigin` to "$nyhostname" has the very same outcome
+as setting it to `"{{ ansible_fqdn }}"`.
+
+### postfix_myhostname
+
+    postfix_myhostname: "{{ ansible_fqdn }}"
+
+The `myhostname` parameter specifies the internet hostname of this mail system.
+The default is to use the fully-qualified domain name
+
+### postfix_mydomain
+
+    postfix_mydomain: "{{ ansible_domain }}"
+
+The `mydomain` parameter specifies the local internet domain name.
+The default is to use the fact ansible_domain, which should match the Postfix
+default that is $myhostname minus the first component.
+
+### postfix_myorigin
+
+    postfix_myorigin: "{{ '$myhostname' if ansible_os_family == 'RedHat' else '/etc/mailname' }}"
+
+The `myorigin` parameter specifies the domain that locally-posted mail appears to
+come from. The default is to append $myhostname, which is fine for small sites.  
+Debian specific:  Specifying a file name will cause the first line of that file
+to be used as the name.  The Debian default is `/etc/mailname`.
+
+### postfix_mydestination
+
+    postfix_mydestination: "$myhostname, localhost.$mydomain, localhost"
+
+The `mydestination` parameter specifies the list of domains that this machine
+considers itself the final destination for.  
+The default is \$myhostname + localhost.$mydomain + localhost.  On a mail domain
+gateway, you should also include $mydomain.
 
 ### postfix_inet_interfaces
 
     postfix_inet_interfaces: localhost
 
-This parameter specifies the network interfaces addresses that this mail system
-receives mail on. The default is to listen only on `localhost`. You can specify
-more than one by comma separating them. Set to `all` for all available
-interfaces or to a comma-separated list of IP addresses. See [postconf
+The `inet_interfaces` parameter specifies the network interfaces addresses that
+this mail system receives mail on. The default is to listen only on `localhost`.
+You can specify more than one by comma separating them. Set to `all` for all
+available interfaces or to a comma-separated list of IP addresses. See [postconf
 manpage](https://www.postfix.org/postconf.5.html#inet_interfaces) for the
 details about this option.
 
@@ -109,20 +153,27 @@ passed in as parameters) is always nice for users too:
     - hosts: servers
 
       roles:
-         - { role: unibe_idsys.postifx }
+         - unibe_idsys.postifx
 
-<!-- add an example which illustrate a standard usage internally? -->
+<!-- add an example which illustrates a standard usage internally? -->
 
-The following example shows how to remove Postfix from the systems again:
+The following example illustrates how to remove Postfix from the systems again:
 
     - hosts: servers
 
-      vars:
-        postfix_service_state: stopped
-        postfix_packages_state: absent
-
       roles:
-         - { role: unibe_idsys.postifx }
+        - role: unibe_idsys.postifx
+          vars:
+            postfix_service_state: stopped
+            postfix_packages_state: absent
+
+## Compatibility
+
+This role has been written for and tested on and is therefore compatible with:
+
+* CentOS-7
+* Rocky-8, Rocky-9
+* Ubuntu-20.04, Ubuntu-22.04
 
 ## License
 

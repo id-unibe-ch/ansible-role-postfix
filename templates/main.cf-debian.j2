@@ -40,7 +40,7 @@ myhostname = {{ ansible_fqdn }}
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
 myorigin = /etc/mailname
-mydestination = $myhostname, {{ ansible_fqdn }}, localhost.{{ ansible_domain }}, localhost
+mydestination = {{ postfix_mydestination }}
 {% if postfix_relayhost != "undef" %}
 relayhost = {{ postfix_relayhost }}
 {% endif %}

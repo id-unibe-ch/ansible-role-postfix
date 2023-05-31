@@ -168,6 +168,10 @@ The following example illustrates how to remove Postfix from the systems again:
             postfix_service_state: stopped
             postfix_packages_state: absent
 
+**Note:** Removing Postfix from the system will also purge any configuration in
+`/etc/postfix`. If you want to preserve it, make a backup before applying the
+above play.
+
 ## Compatibility
 
 This role has been written for and tested on and is therefore compatible with:

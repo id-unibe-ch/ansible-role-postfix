@@ -4,7 +4,7 @@
 postfix_myhostname: "{{ ansible_fqdn }}"
 
 # The mydomain parameter specifies the local internet domain name.
-postfix_mydomain: "{{ ansible_domain }}"
+postfix_mydomain: "undef"
 
 # The myorigin parameter specifies the domain that locally-posted mail appears
 # to come from.

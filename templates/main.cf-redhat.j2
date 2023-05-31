@@ -103,7 +103,9 @@ myhostname = {{ postfix_myhostname }}
 # parameters.
 #
 #mydomain = domain.tld
+{% if postfix_mydomain != "undef" %}
 mydomain = {{ postfix_mydomain }}
+{% endif %}
 
 # SENDING MAIL
 #

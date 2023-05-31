@@ -31,18 +31,19 @@ The default is to use the fully-qualified domain name
 
 ### postfix_mydomain
 
-    postfix_mydomain: "{{ ansible_domain }}"
+    postfix_mydomain: "undef"
 
-The `mydomain` parameter specifies the local internet domain name.
-The default is to use the fact ansible_domain, which should match the Postfix
-default that is $myhostname minus the first component.
+The `mydomain` parameter specifies the local internet domain name. The default
+is "undef" that meas Postfix will compute the value based on its defaults, which
+results in $myhostname minus the first component.
 
 ### postfix_myorigin
 
     postfix_myorigin: "{{ '$myhostname' if ansible_os_family == 'RedHat' else '/etc/mailname' }}"
 
 The `myorigin` parameter specifies the domain that locally-posted mail appears to
-come from. The default is to append $myhostname, which is fine for small sites.  
+come from. The default is to append $myhostname, which is fine for small
+sites.  
 Debian specific:  Specifying a file name will cause the first line of that file
 to be used as the name.  The Debian default is `/etc/mailname`.
 

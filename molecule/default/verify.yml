@@ -4,23 +4,45 @@
   gather_facts: false
 
   tasks:
+    - name: Option myhostname defaults to ansible_fqdn
+      ansible.builtin.lineinfile:
+        path: /etc/postfix/main.cf
+        regexp: "^myhostname = mail.test"
+        state: absent
+      check_mode: true
+      register: myhostname
+      changed_when: false
+      failed_when: not myhostname.found
+
+    - name: Option mydomain defaults to test
+      ansible.builtin.lineinfile:
+        path: /etc/postfix/main.cf
+        regexp: "^mydomain = test"
+        state: absent
+      check_mode: true
+      register: mydomain
+      changed_when: false
+      failed_when: mydomain is changed
+
     - name: Option inet_interfaces defaults to localhost
       ansible.builtin.lineinfile:
         path: /etc/postfix/main.cf
         regexp: "^inet_interfaces = localhost"
-        state: present
+        state: absent
       check_mode: true
       register: inet_interfaces
-      failed_when: inet_interfaces is changed
+      changed_when: false
+      failed_when: not inet_interfaces.found
 
     - name: Option inet_protocols defaults to all
       ansible.builtin.lineinfile:
         path: /etc/postfix/main.cf
         regexp: "^inet_protocols = all"
-        state: present
+        state: absent
       check_mode: true
       register: inet_protocols
-      failed_when: inet_protocols is changed
+      changed_when: false
+      failed_when: not inet_protocols.found
 
     - name: No relay host is set
       ansible.builtin.lineinfile:

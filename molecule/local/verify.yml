@@ -4,7 +4,37 @@
   gather_facts: false
 
   tasks:
-    - name: Option inet_interfaces defaults to localhost
+    - name: Option myhostname is correctly set
+      ansible.builtin.lineinfile:
+        path: /etc/postfix/main.cf
+        regexp: "^myhostname = secondary.example.com"
+        state: absent
+      check_mode: true
+      register: myhostname
+      changed_when: false
+      failed_when: not myhostname.found
+
+    - name: Option mydomain is correctly set
+      ansible.builtin.lineinfile:
+        path: /etc/postfix/main.cf
+        regexp: "^mydomain = test.com"
+        state: absent
+      check_mode: true
+      register: mydomain
+      changed_when: false
+      failed_when: not mydomain.found
+
+    - name: Option mydestination is correctly set
+      ansible.builtin.lineinfile:
+        path: /etc/postfix/main.cf
+        regexp: "^mydestination = test.com, example.com, localhost.test.com, localhost"
+        state: absent
+      check_mode: true
+      register: mydestination
+      changed_when: false
+      failed_when: not mydestination.found
+
+    - name: Option inet_interfaces is correctly set
       ansible.builtin.lineinfile:
         path: /etc/postfix/main.cf
         regexp: "^inet_interfaces = 127.0.0.1"
@@ -13,7 +43,7 @@
       register: inet_interfaces
       failed_when: inet_interfaces is changed
 
-    - name: Option inet_protocols defaults to all
+    - name: Option inet_protocols is correctly set
       ansible.builtin.lineinfile:
         path: /etc/postfix/main.cf
         regexp: "^inet_protocols = ipv4"

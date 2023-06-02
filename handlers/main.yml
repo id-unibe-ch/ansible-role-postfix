@@ -5,7 +5,7 @@
   changed_when: false
   listen: rebuild_aliases_db
 
-# Reload postfix service
+# Restart postfix service
 - name: Restart postfix service
   ansible.builtin.service:
     name: "{{ postfix_service }}"

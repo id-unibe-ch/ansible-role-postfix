@@ -8,7 +8,7 @@ postfix_mydomain: "undef"
 
 # The myorigin parameter specifies the domain that locally-posted mail appears
 # to come from.
-postfix_myorigin: "{{ '$myhostname' if ansible_os_family == 'RedHat' else '/etc/mailname' }}"
+postfix_myorigin: "undef"
 
 # The mydestination parameter specifies the list of domains that this
 # machine considers itself the final destination for.

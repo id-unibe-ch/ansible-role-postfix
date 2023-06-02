@@ -24,6 +24,16 @@
       changed_when: false
       failed_when: mydomain is changed
 
+    - name: Option myorigin defaults to not set
+      ansible.builtin.lineinfile:
+        path: /etc/postfix/main.cf
+        regexp: "^myorigin ="
+        state: absent
+      check_mode: true
+      register: myorigin
+      changed_when: false
+      failed_when: myorigin.found
+
     - name: Option inet_interfaces defaults to localhost
       ansible.builtin.lineinfile:
         path: /etc/postfix/main.cf

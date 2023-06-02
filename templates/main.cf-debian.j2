@@ -42,7 +42,9 @@ mydomain = {{ postfix_mydomain }}
 {% endif %}
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
-myorigin = /etc/mailname
+{% if postfix_myorigin != "undef" %}
+myorigin = {{ postfix_myorigin }}
+{% endif %}
 mydestination = {{ postfix_mydestination }}
 {% if postfix_relayhost != "undef" %}
 relayhost = {{ postfix_relayhost }}

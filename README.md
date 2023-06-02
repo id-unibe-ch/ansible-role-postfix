@@ -39,13 +39,11 @@ results in $myhostname minus the first component.
 
 ### postfix_myorigin
 
-    postfix_myorigin: "{{ '$myhostname' if ansible_os_family == 'RedHat' else '/etc/mailname' }}"
+    postfix_myorigin: "undef"
 
 The `myorigin` parameter specifies the domain that locally-posted mail appears to
 come from. The default is to append $myhostname, which is fine for small
-sites.  
-Debian specific:  Specifying a file name will cause the first line of that file
-to be used as the name.  The Debian default is `/etc/mailname`.
+sites.
 
 ### postfix_mydestination
 

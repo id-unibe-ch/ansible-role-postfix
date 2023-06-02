@@ -24,6 +24,16 @@
       changed_when: false
       failed_when: not mydomain.found
 
+    - name: Option myorigin is correctly set
+      ansible.builtin.lineinfile:
+        path: /etc/postfix/main.cf
+        regexp: "^myorigin = test.com"
+        state: absent
+      check_mode: true
+      register: myorigin
+      changed_when: false
+      failed_when: not myorigin.found
+
     - name: Option mydestination is correctly set
       ansible.builtin.lineinfile:
         path: /etc/postfix/main.cf

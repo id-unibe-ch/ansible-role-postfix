@@ -34,6 +34,16 @@
       changed_when: false
       failed_when: myorigin.found
 
+    - name: Option mydestination defaults to expected default value
+      ansible.builtin.lineinfile:
+        path: /etc/postfix/main.cf
+        regexp: "^mydestination = \\$myhostname, localhost.\\$mydomain, localhost"
+        state: absent
+      check_mode: true
+      register: mydestination
+      changed_when: false
+      failed_when: not mydestination.found
+
     - name: Option inet_interfaces defaults to localhost
       ansible.builtin.lineinfile:
         path: /etc/postfix/main.cf

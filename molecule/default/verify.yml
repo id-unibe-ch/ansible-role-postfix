@@ -41,7 +41,7 @@
       check_mode: true
       register: myorigin
       changed_when: false
-      failed_when: myorigin.found
+      failed_when: myorigin.found | bool
 
     - name: Option mydestination defaults to expected default value
       ansible.builtin.lineinfile:
@@ -51,7 +51,7 @@
       check_mode: true
       register: mydestination
       changed_when: false
-      failed_when: not mydestination.found
+      failed_when: not mydestination.found | bool
 
     - name: Option inet_interfaces defaults to all
       ansible.builtin.lineinfile:
@@ -61,7 +61,7 @@
       check_mode: true
       register: inet_interfaces
       changed_when: false
-      failed_when: not inet_interfaces.found
+      failed_when: not inet_interfaces.found | bool
 
     - name: Option inet_protocols defaults to all
       ansible.builtin.lineinfile:
@@ -71,7 +71,7 @@
       check_mode: true
       register: inet_protocols
       changed_when: false
-      failed_when: not inet_protocols.found
+      failed_when: not inet_protocols.found | bool
 
     - name: No relay host is set
       ansible.builtin.lineinfile:
@@ -106,7 +106,7 @@
         state: absent
       check_mode: true
       register: sender_canonical_maps
-      failed_when: sender_canonical_maps.found
+      failed_when: sender_canonical_maps.found | bool
 
     - name: Postfix service is running
       ansible.builtin.wait_for:

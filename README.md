@@ -155,6 +155,47 @@ might look as follows:
 By adding a configuration here the ldap map is automatically added to the
 sender_canonical_map configuration option of Postfix.
 
+#### recipient_canonical map
+
+##### hash type map
+
+    postfix_recipient_canonicals: []
+
+This allows setting recipient canonical addresses in the database
+`hash:/etc/postfix/recipient_canonical` in order to rewrite recipient addresses to be
+sure bounces can be routed back to valid address.
+This can be used to rewrite local accounts:
+
+Examples:
+
+    postfix_recipient_canonicals:
+      - root: existing.user@example.com
+
+By adding mappings here the hash map is automatically added to the
+recipient_canonical_map configuration option of Postfix.
+
+##### ldap type map
+
+    postfix_ldap_recipient_canonincal_config: {}
+
+This config dictionary allows to configure lookups of recipient_canonicals stored
+in an LDAP directory. Use configuration parameters as described in the official
+documentation on [that topic](https://www.postfix.org/ldap_table.5.html). An
+example using two LDAP servers as a failover setup and transport encryption
+might look as follows:
+
+    postfix_ldap_recipient_canonincal_config:
+      server_host: "ldap://ldap01.mycompany.com ldap://ldap02.mycompany.com"
+      start_tls: "yes"
+      version: "3"
+      bind: "no"
+      search_base: "ou=users,dc=mycompany,dc=com"
+      query_filter: "(uid=%s)"
+      result_attribute: "mail"
+
+By adding a configuration here the ldap map is automatically added to the
+recipient_canonical_map configuration option of Postfix.
+
 ### Configuring Package and Service State
 
     postfix_enabled: true

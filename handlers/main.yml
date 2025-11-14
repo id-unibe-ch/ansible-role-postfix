@@ -11,6 +11,12 @@
   changed_when: yes
   listen: Rebuild_sender_canonical_db
 
+- name: Rebuild recipient_canonical database
+  ansible.builtin.command:
+    cmd: postmap "{{ __postfix_recipient_canonical_path }}"
+  changed_when: yes
+  listen: Rebuild_recipient_canonical_db
+
 # Restart postfix service
 - name: Restart postfix service
   ansible.builtin.service:

@@ -753,3 +753,6 @@ shlib_directory = /usr/lib64/postfix
 {% if __postfix_sender_canonical_maps | length > 0 %}
 sender_canonical_maps = {{ __postfix_sender_canonical_maps | join(", ") }}
 {% endif %}
+{% if __postfix_recipient_canonical_maps | length > 0 %}
+recipient_canonical_maps = {{ __postfix_recipient_canonical_maps | join(", ") }}
+{% endif %}

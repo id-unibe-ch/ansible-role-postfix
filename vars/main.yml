@@ -10,6 +10,11 @@ __postfix_service: postfix
 # Default database files
 __postfix_alias_path: /etc/aliases
 
+# recipient_canonical related option names and filepaths
+__postfix_recipient_canonical_maps: []
+__postfix_recipient_canonical_path: /etc/postfix/recipient_canonical
+__postfix_recipient_canonical_ldap_config_path: /etc/postfix/ldap-recipient_canonical.cf
+
 # sender_canonical related option names and filepaths
 __postfix_sender_canonical_maps: []
 __postfix_sender_canonical_path: /etc/postfix/sender_canonical

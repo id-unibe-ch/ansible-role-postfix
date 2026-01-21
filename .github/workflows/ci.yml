@@ -13,10 +13,10 @@ jobs:
 
     steps:
       - name: Checkout the codebase
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Python 3
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.13"
 
@@ -35,17 +35,17 @@ jobs:
     # See https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs#using-a-matrix-strategy
     strategy:
       matrix:
-        distro: [rockylinux9, ubuntu2004, ubuntu2204, ubuntu2404]
+        distro: [rockylinux9, ubuntu2204, ubuntu2404]
         scenario: [default, local, remove-alias, uninstall]
         include:
           - playbook: converge.yml
 
     steps:
       - name: Checkout the codebase
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Python 3
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.13"
 

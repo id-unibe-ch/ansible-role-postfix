@@ -35,10 +35,13 @@ jobs:
     # See https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs#using-a-matrix-strategy
     strategy:
       matrix:
-        distro: [rockylinux9, ubuntu2204, ubuntu2404]
-        scenario: [default, local, remove-alias, uninstall]
+        distro: [rockylinux9, ubuntu2204, ubuntu2404, ubuntu2604]
+        scenario: [default, local, remove-alias, tls-config, uninstall]
         include:
           - playbook: converge.yml
+          - distro: ubuntu2604
+            scenario: lookup-tables
+            playbook: converge.yml
 
     steps:
       - name: Checkout the codebase

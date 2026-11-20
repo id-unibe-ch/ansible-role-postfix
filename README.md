@@ -13,6 +13,8 @@ features:
 
 No prerequisites necessary at the moment.
 
+Supported Ubuntu releases: 20.04, 22.04, 24.04, and 26.04.
+
 ## Role Variables
 
 Available variables are listed below, along with default values (see also `defaults/main.yml`):
@@ -73,6 +75,22 @@ This parameter specifies the internet protocols to support. The default is
 `all`, which means IPv4, and IPv6 if supported. See [postconf
 manpage](https://www.postfix.org/postconf.5.html#inet_protocols) manpage for the
 details about this option.
+
+### postfix_smtpd_tls_cert_file and postfix_smtpd_tls_key_file
+
+These variables set the certificate and private key used by Postfix for inbound
+SMTP TLS. Their defaults preserve the distribution paths:
+
+* Ubuntu: `/etc/ssl/certs/ssl-cert-snakeoil.pem` and
+  `/etc/ssl/private/ssl-cert-snakeoil.key`
+* Red Hat: `/etc/pki/tls/certs/postfix.pem` and
+  `/etc/pki/tls/private/postfix.key`
+
+The role keeps `smtpd_tls_security_level` at `may`, which is appropriate for a
+public SMTP server because it offers TLS without requiring every remote mail
+server to support it. The default certificate paths use distribution-provided
+certificates; production servers should set these variables to a valid
+site-managed certificate and key.
 
 ### postfix_relayhost
 

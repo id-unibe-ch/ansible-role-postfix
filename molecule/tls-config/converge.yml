@@ -1,0 +1,39 @@
+---
+- name: Converge with custom Postfix TLS paths.
+  hosts: all
+
+  tasks:
+    - name: Set ansible_fqdn and ansible_domain something static for the tests
+      ansible.builtin.set_fact:
+        ansible_fqdn: mail.test
+        ansible_domain: test
+
+    - name: Update apt cache before installing TLS fixtures
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+      when: ansible_os_family == 'Debian'
+
+    - name: Install Postfix to provide TLS fixtures
+      ansible.builtin.package:
+        name: postfix
+        state: present
+
+    - name: Create alternate TLS certificate path
+      ansible.builtin.file:
+        src: "{{ '/etc/ssl/certs/ssl-cert-snakeoil.pem' if ansible_os_family == 'Debian' else '/etc/pki/tls/certs/postfix.pem' }}"
+        dest: /etc/postfix/molecule-smtpd-cert.pem
+        state: link
+
+    - name: Create alternate TLS key path
+      ansible.builtin.file:
+        src: "{{ '/etc/ssl/private/ssl-cert-snakeoil.key' if ansible_os_family == 'Debian' else '/etc/pki/tls/private/postfix.key' }}"
+        dest: /etc/postfix/molecule-smtpd-key.pem
+        state: link
+
+    - name: Include unibeid.postfix with custom TLS paths
+      ansible.builtin.include_role:
+        name: "unibeid.postfix"
+      vars:
+        postfix_smtpd_tls_cert_file: /etc/postfix/molecule-smtpd-cert.pem
+        postfix_smtpd_tls_key_file: /etc/postfix/molecule-smtpd-key.pem

@@ -37,11 +37,12 @@
       ansible.builtin.command:
         argv:
           - postconf
+          - -x
           - -h
           - smtpd_relay_restrictions
       register: smtpd_relay_restrictions
       changed_when: false
-      failed_when: smtpd_relay_restrictions.stdout != 'permit_mynetworks permit_sasl_authenticated defer_unauth_destination'
+      failed_when: smtpd_relay_restrictions.stdout | regex_replace('[, ]+', ' ') | trim != 'permit_mynetworks permit_sasl_authenticated defer_unauth_destination'
 
     - name: Inbound SMTP TLS remains opportunistic
       ansible.builtin.command:

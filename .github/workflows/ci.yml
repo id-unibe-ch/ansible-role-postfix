@@ -39,6 +39,9 @@ jobs:
         scenario: [default, local, remove-alias, tls-config, uninstall]
         include:
           - playbook: converge.yml
+          - distro: ubuntu2604
+            scenario: lookup-tables
+            playbook: converge.yml
 
     steps:
       - name: Checkout the codebase

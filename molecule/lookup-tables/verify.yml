@@ -53,3 +53,38 @@
       register: sender_canonical_maps
       changed_when: false
       failed_when: not sender_canonical_maps.found
+
+    - name: Query role-generated sender canonical hash database
+      ansible.builtin.command:
+        argv:
+          - postmap
+          - -q
+          - root
+          - hash:/etc/postfix/sender_canonical
+      register: sender_canonical_lookup
+      changed_when: false
+      failed_when: sender_canonical_lookup.stdout != 'elmar.fudge@example.com'
+
+    - name: Create btree lookup fixture
+      ansible.builtin.copy:
+        content: "molecule-backend available\n"
+        dest: /etc/postfix/molecule-btree
+        mode: "0644"
+
+    - name: Build btree lookup database
+      ansible.builtin.command:
+        argv:
+          - postmap
+          - btree:/etc/postfix/molecule-btree
+      changed_when: true
+
+    - name: Query btree lookup database
+      ansible.builtin.command:
+        argv:
+          - postmap
+          - -q
+          - molecule-backend
+          - btree:/etc/postfix/molecule-btree
+      register: btree_lookup
+      changed_when: false
+      failed_when: btree_lookup.stdout != 'available'

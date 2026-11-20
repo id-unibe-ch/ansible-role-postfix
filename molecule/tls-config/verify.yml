@@ -1,0 +1,25 @@
+---
+- name: Verify the custom Postfix TLS paths.
+  hosts: all
+  gather_facts: true
+
+  tasks:
+    - name: Custom SMTP TLS certificate path is configured
+      ansible.builtin.command:
+        argv:
+          - postconf
+          - -h
+          - smtpd_tls_cert_file
+      register: smtpd_tls_cert_file
+      changed_when: false
+      failed_when: smtpd_tls_cert_file.stdout != '/etc/postfix/molecule-smtpd-cert.pem'
+
+    - name: Custom SMTP TLS key path is configured
+      ansible.builtin.command:
+        argv:
+          - postconf
+          - -h
+          - smtpd_tls_key_file
+      register: smtpd_tls_key_file
+      changed_when: false
+      failed_when: smtpd_tls_key_file.stdout != '/etc/postfix/molecule-smtpd-key.pem'

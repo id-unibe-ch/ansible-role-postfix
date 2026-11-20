@@ -13,6 +13,69 @@
       failed_when: package is changed
       when: not (ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7')
 
+    - name: Default SMTP TLS certificate path is configured
+      ansible.builtin.command:
+        argv:
+          - postconf
+          - -h
+          - smtpd_tls_cert_file
+      register: smtpd_tls_cert_file
+      changed_when: false
+      failed_when: smtpd_tls_cert_file.stdout != ('/etc/ssl/certs/ssl-cert-snakeoil.pem' if ansible_os_family == 'Debian' else '/etc/pki/tls/certs/postfix.pem')
+
+    - name: Default SMTP TLS key path is configured
+      ansible.builtin.command:
+        argv:
+          - postconf
+          - -h
+          - smtpd_tls_key_file
+      register: smtpd_tls_key_file
+      changed_when: false
+      failed_when: smtpd_tls_key_file.stdout != ('/etc/ssl/private/ssl-cert-snakeoil.key' if ansible_os_family == 'Debian' else '/etc/pki/tls/private/postfix.key')
+
+    - name: SMTP relay restrictions prevent unauthorized relaying
+      ansible.builtin.command:
+        argv:
+          - postconf
+          - -h
+          - smtpd_relay_restrictions
+      register: smtpd_relay_restrictions
+      changed_when: false
+      failed_when: smtpd_relay_restrictions.stdout != 'permit_mynetworks permit_sasl_authenticated defer_unauth_destination'
+
+    - name: Inbound SMTP TLS remains opportunistic
+      ansible.builtin.command:
+        argv:
+          - postconf
+          - -h
+          - smtpd_tls_security_level
+      register: smtpd_tls_security_level
+      changed_when: false
+      failed_when: smtpd_tls_security_level.stdout != 'may'
+
+    - name: Outbound SMTP TLS remains opportunistic
+      ansible.builtin.command:
+        argv:
+          - postconf
+          - -h
+          - smtp_tls_security_level
+      register: smtp_tls_security_level
+      changed_when: false
+      failed_when: smtp_tls_security_level.stdout != 'may'
+
+    - name: Ubuntu 26.04 uses Postfix compatibility level 3.10
+      ansible.builtin.command:
+        argv:
+          - postconf
+          - -h
+          - compatibility_level
+      register: compatibility_level
+      changed_when: false
+      failed_when: compatibility_level.stdout != '3.10'
+      when:
+        - ansible_distribution == 'Ubuntu'
+        - ansible_distribution_version is version('26.04', '==')
+
     - name: Option myhostname defaults to ansible_fqdn
       ansible.builtin.lineinfile:
         path: /etc/postfix/main.cf

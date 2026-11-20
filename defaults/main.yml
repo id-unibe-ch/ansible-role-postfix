@@ -21,6 +21,12 @@ postfix_inet_interfaces: all
 # Enable IPv4, and IPv6 if supported; valid value include `all`, `ipv4`,
 postfix_inet_protocols: all
 
+# Configure the certificate used for inbound SMTP TLS.
+postfix_smtpd_tls_cert_file: >-
+  {{ '/etc/ssl/certs/ssl-cert-snakeoil.pem' if ansible_os_family == 'Debian' else '/etc/pki/tls/certs/postfix.pem' }}
+postfix_smtpd_tls_key_file: >-
+  {{ '/etc/ssl/private/ssl-cert-snakeoil.key' if ansible_os_family == 'Debian' else '/etc/pki/tls/private/postfix.key' }}
+
 # Dictionary with mail aliases that are managed in /etc/aliases
 postfix_alias_map: {}
 

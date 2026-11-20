@@ -19,15 +19,15 @@ append_dot_mydomain = no
 
 readme_directory = no
 
-# See http://www.postfix.org/COMPATIBILITY_README.html -- default to 3.6 on
-# fresh installs.
+# See http://www.postfix.org/COMPATIBILITY_README.html for details on the
+# release-specific compatibility level.
 compatibility_level = {{ __postfix_compatibility_level }}
 
 
 
 # TLS parameters
-smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
-smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
+smtpd_tls_cert_file={{ postfix_smtpd_tls_cert_file }}
+smtpd_tls_key_file={{ postfix_smtpd_tls_key_file }}
 smtpd_tls_security_level=may
 
 smtp_tls_CApath=/etc/ssl/certs
